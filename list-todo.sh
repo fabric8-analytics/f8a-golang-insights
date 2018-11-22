@@ -1,6 +1,6 @@
 #!/bin/bash
 
-directories="f8a_ingestion tests"
+directories="insights_engine/"
 
 # checks for the whole directories
 for directory in $directories
