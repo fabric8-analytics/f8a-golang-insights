@@ -37,7 +37,7 @@ build_image() {
         exit 1
     fi
     # Also runs the recipe for docker-build
-    make docker-build-test
+    make docker-build
 }
 
 tag_push() {
