@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-directories = ""
+directories="insights_engine/"
 pass=0
 fail=0
 
