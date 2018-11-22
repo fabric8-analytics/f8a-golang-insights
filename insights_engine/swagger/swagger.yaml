@@ -1,0 +1,101 @@
+swagger: '2.0'
+info:
+  title: API for golang companion recommendations
+  description: Spec for the RESTful interface to the golang insights model.
+  version: '0.1'
+basePath: /api/v1/
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /liveness:
+    get:
+      tags:
+        - Service settings
+      operationId: insights_engine.rest_api.liveness
+      summary: Get service liveness
+      responses:
+        '200':
+          description: Service is alive
+  /readiness:
+    get:
+      tags:
+        - Service settings
+      operationId: insights_engine.rest_api.readiness
+      summary: Get service readiness
+      responses:
+        '200':
+          description: Service is ready
+  /companion_recommendation:
+    post:
+      tags:
+        - Recommendation API
+      operationId: insights_engine.rest_api.companion_recommendation
+      summary: >-
+        Return companion package recommendations for a stack of the golang
+        ecosystem
+      parameters:
+        - in: body
+          name: body
+          description: >-
+            Request body expects the one parameter \"package_list\", which is a
+            list containing the user's packages (with version information
+            stripped). Also as an optional parameter takes in the companion package threshold
+            which is the number of companions to be returned.
+          required: true
+          schema:
+            $ref: '#/definitions/UserStack'
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/Response'
+          description: Companion recommendations along with their associated probabilities
+        '500':
+          description: Internal Server Error
+definitions:
+  UserStack:
+    title: Request format for companion_recommendation endpoint
+    description: Request format for companion_recommendation endpoint
+    type: array
+    items:
+        type: object
+        properties:
+          package_list:
+            type: array
+            items:
+              type: string
+          comp_package_count_threshold:
+              type: number
+  Response:
+    title: Response containing the recommendations
+    description: Response containing the recommendations
+    properties:
+      ecosystem:
+        type: string
+      missing_packages:
+        type: array
+        items:
+          type: string
+      companion_packages:
+        $ref: '#/definitions/recommendation'
+      package_to_topic_dict:
+          type: object
+          properties:
+              package_name:
+                  type: array
+                  items:
+                      type: string
+  recommendation:
+    type: array
+    items:
+      type: object
+      properties:
+        package_name:
+          type: string
+        cooccurrence_probability:
+          type: number
+        topic_list:
+          type: array
+          items:
+            type: string
