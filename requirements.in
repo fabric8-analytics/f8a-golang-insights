@@ -1,0 +1,7 @@
+connexion
+flask
+botocore
+boto3
+daiquiri
+gunicorn
+connexion[swagger-ui]
