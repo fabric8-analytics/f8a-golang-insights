@@ -9,7 +9,6 @@ daiquiri.setup(level=logging.WARNING)
 logger = daiquiri.getLogger(__name__)
 
 
-
 def companion_recommendation(stack):
     """The main companion recommendation endpoint that serves incoming requests."""
     # TODO
