@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-TEST_IMAGE_NAME='pypi-tests'
+TEST_IMAGE_NAME='golang-insights-tests'
 
 gc() {
     docker rmi -f $(make get-image-name)
