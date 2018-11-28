@@ -29,7 +29,7 @@ import daiquiri
 
 from insights_engine.config import AWS_S3_ENDPOINT_URL
 
-daiquiri.setup(level=logging.ERROR)
+daiquiri.setup(level=logging.WARNING)
 _logger = daiquiri.getLogger(__name__)
 
 
@@ -51,6 +51,7 @@ class S3DataStore():
             self.s3_resource = self.session.resource('s3', config=botocore.client.Config(
                 signature_version='s3v4'))
         else:
+            _logger.warning("Using local minio instance.")
             self.s3_resource = self.session.resource('s3', config=botocore.client.Config(
                 signature_version='s3v4'), region_name='us-east-1',
                 endpoint_url=AWS_S3_ENDPOINT_URL)

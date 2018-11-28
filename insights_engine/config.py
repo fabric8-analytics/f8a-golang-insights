@@ -36,3 +36,4 @@ ASSOCIATION_RULE_JSON = "association_rules.json"
 ASSOCIATION_RULES_DF = "association_rules.pkl"
 MIN_SUPPORT = 0.05
 MIN_CONFIDENCE = 0.40
+USE_AWS = os.environ.get("USE_AWS", "True")

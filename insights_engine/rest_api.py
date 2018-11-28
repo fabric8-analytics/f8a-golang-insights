@@ -7,7 +7,12 @@ import connexion
 from connexion import NoContent
 import daiquiri
 
-daiquiri.setup(level=logging.WARNING)
+from insights_engine.data_store.s3_data_store import S3DataStore
+from insights_engine.data_store.local_filesystem import LocalFileSystem
+from insights_engine import config as config
+
+daiquiri.setup(level=logging.INFO)
+logging.getLogger('botocore').setLevel(logging.CRITICAL)
 logger = daiquiri.getLogger(__name__)
 
 
@@ -24,7 +29,17 @@ def liveness():
 
 def readiness():
     """Endpoint with the implementation the readiness probe."""
-    logger.debug("Service up and ready to serve requests.")
+    try:
+        if config.USE_AWS == "True":
+            S3DataStore(config.S3_BUCKET_NAME, config.AWS_S3_ACCESS_KEY_ID,
+                        config.AWS_S3_SECRET_ACCESS_KEY)
+        else:
+            LocalFileSystem(config.S3_BUCKET_NAME)
+        logger.info("Service up and ready to serve requests.")
+    except Exception as e:
+        logger.critical("Could not bring up service.")
+        logger.critical(e)
+        return NoContent, 500
     return NoContent, 200
 
 

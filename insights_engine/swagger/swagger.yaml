@@ -27,6 +27,8 @@ paths:
       responses:
         '200':
           description: Service is ready
+        '500':
+          description: Could not create datastore connection, internal server error
   /companion_recommendation:
     post:
       tags:

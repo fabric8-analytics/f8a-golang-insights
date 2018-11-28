@@ -58,7 +58,6 @@ class LocalFileSystem(AbstractDataStore):
         with open(os.path.join(self.src_dir, filename)) as json_fileobj:
             return json.load(json_fileobj)
 
-
     def download_file(self, src, target):
         """Download a file from data_store."""
         with open(src, 'rb') as inf, open(target, 'wb') as out:
