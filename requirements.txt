@@ -23,6 +23,8 @@ jmespath==0.9.3           # via boto3, botocore
 jsonschema==2.6.0         # via connexion, openapi-spec-validator
 markupsafe==1.1.0         # via jinja2
 openapi-spec-validator==0.2.4  # via connexion
+py4j==0.10.7              # via pyspark
+pyspark==2.4.0
 python-dateutil==2.7.5    # via botocore
 pyyaml==3.13              # via clickclick, connexion, openapi-spec-validator
 requests==2.20.1          # via connexion

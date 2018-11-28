@@ -22,15 +22,12 @@ import io
 import json
 import logging
 import os
-import pickle
 
 import boto3
 import botocore
 import daiquiri
 
-from scipy.io import loadmat
-
-from recommendation_engine.config.cloud_constants import AWS_S3_ENDPOINT_URL
+from insights_engine.config import AWS_S3_ENDPOINT_URL
 
 daiquiri.setup(level=logging.ERROR)
 _logger = daiquiri.getLogger(__name__)
@@ -84,6 +81,10 @@ class S3DataStore():
         self.bucket.upload_file(src, target)
         return None
 
+    def download_file(self, src, target):
+        """Download a file from data store."""
+        self.bucket.download_file(src, target)
+
     def upload_folder_to_s3(self, folder_path, prefix=''):
         """Upload(Sync) a folder to S3.
 
@@ -97,20 +98,6 @@ class S3DataStore():
                 else:
                     s3_dest = os.path.join(prefix, filename)
                 self.bucket.upload_file(os.path.join(root, filename), s3_dest)
-
-    def load_matlab_multi_matrix(self, s3_path):
-        """Load a '.mat' file & return a dict representation.
-
-        :s3_path: The path of the object in the S3 bucket.
-        :returns: A dict containing numpy matrices against the keys of the
-                  multi-matrix.
-        """
-        local_filename = os.path.join('/tmp', s3_path.split('/')[-1])
-        self.bucket.download_file(s3_path, local_filename)
-        model_dict = loadmat(local_filename)
-        if not model_dict:
-            _logger.error("Unable to load the model for scoring")
-        return model_dict
 
     def read_into_file(self, filename):
         """Read from S3 and return stream as a file object."""

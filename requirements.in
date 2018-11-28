@@ -5,3 +5,4 @@ boto3
 daiquiri
 gunicorn
 connexion[swagger-ui]
+pyspark
