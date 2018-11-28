@@ -8,6 +8,7 @@ warnings.filterwarnings('ignore')
 
 
 def run_mercator(man_file_name):
+    """Run the mercator commmand line tool and return its o/p."""
     completed = subprocess.Popen(["mercator",
                                   man_file_name],
                                  stdout=subprocess.PIPE,

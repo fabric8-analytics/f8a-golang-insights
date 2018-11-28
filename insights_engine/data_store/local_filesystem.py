@@ -18,11 +18,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-import fnmatch
-import io
 import json
 import logging
 import os
+
 import daiquiri
 
 from insights_engine.data_store.abstract_data_store import AbstractDataStore
