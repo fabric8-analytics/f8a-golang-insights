@@ -6,3 +6,4 @@ daiquiri
 gunicorn
 connexion[swagger-ui]
 pyspark
+pandas

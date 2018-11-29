@@ -34,8 +34,8 @@ PACKAGE_INGESTION_LIST = os.path.join(_TRAINING_OBJECT_PREFIX,
                                       "packages_to_ingest.txt")
 ASSOCIATION_RULE_JSON = "association_rules.json"
 ASSOCIATION_RULES_DF = "association_rules.pkl"
-MIN_SUPPORT = 0.05
-MIN_CONFIDENCE = 0.40
+MIN_SUPPORT = float(os.environ.get("MIN_SUPPORT", 0.05))
+MIN_CONFIDENCE = float(os.environ.get("MIN_CONFIDENCE", 0.40))
 USE_AWS = os.environ.get("USE_AWS", "True")
 PACKAGE_IDX_MAPS = "package_idx.json"
-MIN_CONFIDENCE_SCORING = .60
+MIN_CONFIDENCE_SCORING = float(os.environ.get("MIN_CONFIDENCE_SCORING", .60))
