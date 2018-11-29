@@ -13,4 +13,4 @@ RUN chmod 0777 /insights_engine/scripts/entrypoint.sh
 
 RUN pip3 install -r requirements.txt
 
-ENTRYPOINT ["/insights_engines/scripts/entrypoint.sh"]
+ENTRYPOINT ["/insights_engine/scripts/entrypoint.sh"]

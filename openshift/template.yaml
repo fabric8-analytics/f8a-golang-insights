@@ -24,7 +24,7 @@ objects:
       spec:
         containers:
         - command:
-          - /bin/entrypoint.sh
+          - /insights_engine/scripts/entrypoint.sh
           env:
           - name: DEPLOYMENT_PREFIX
             valueFrom:
