@@ -71,9 +71,9 @@ df = spark.createDataFrame(df_rows, ["id", "packages"])
 # Train the FP-growth model
 fpGrowth = FPGrowth(itemsCol="packages", minSupport=config.MIN_SUPPORT,
                     minConfidence=config.MIN_CONFIDENCE)
-logger.info("Association rule mining started at %f" % time.time())
+logger.info("Association rule mining started at %s" % time.ctime())
 model = fpGrowth.fit(df)
-logger.info("Association rule mining ended at %f" % time.time())
+logger.info("Association rule mining ended at %s" % time.ctime())
 logger.info("Mined %d rules" % model.associationRules.count())
 
 # Get the model as json
@@ -85,6 +85,10 @@ rules_df = model.associationRules.toPandas()
 with open(config.ASSOCIATION_RULE_JSON, 'w') as f:
     json.dump(rule_json, f)
 
+with open(config.PACKAGE_IDX_MAPS, 'w') as f:
+    json.dump({"package_to_index_map": package_to_index_map,
+               "index_to_package_map": index_to_pacakge_map}, f)
+
 # Now save the dataframe from Pandas
 rules_df.to_pickle(config.ASSOCIATION_RULES_DF)
 
@@ -93,3 +97,5 @@ s3_bucket.upload_file(config.ASSOCIATION_RULE_JSON,
                       os.path.join(config._TRAINED_OBJECT_PREFIX, config.ASSOCIATION_RULE_JSON))
 s3_bucket.upload_file(config.ASSOCIATION_RULES_DF,
                       os.path.join(config._TRAINED_OBJECT_PREFIX, config.ASSOCIATION_RULES_DF))
+s3_bucket.upload_file(config.PACKAGE_IDX_MAPS,
+                      os.path.join(config._TRAINED_OBJECT_PREFIX, config.PACKAGE_IDX_MAPS))

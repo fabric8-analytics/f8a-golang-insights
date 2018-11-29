@@ -37,3 +37,5 @@ ASSOCIATION_RULES_DF = "association_rules.pkl"
 MIN_SUPPORT = 0.05
 MIN_CONFIDENCE = 0.40
 USE_AWS = os.environ.get("USE_AWS", "True")
+PACKAGE_IDX_MAPS = "package_idx.json"
+MIN_CONFIDENCE_SCORING = .60

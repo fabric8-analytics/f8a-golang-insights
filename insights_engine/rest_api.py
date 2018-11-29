@@ -10,16 +10,11 @@ import daiquiri
 from insights_engine.data_store.s3_data_store import S3DataStore
 from insights_engine.data_store.local_filesystem import LocalFileSystem
 from insights_engine import config as config
+from insights_engine.scoring.rules_predict import ScoringEngine
 
 daiquiri.setup(level=logging.INFO)
 logging.getLogger('botocore').setLevel(logging.CRITICAL)
 logger = daiquiri.getLogger(__name__)
-
-
-def companion_recommendation(stack):
-    """Endpoint for the  main companion recommendation endpoint that serves incoming requests."""
-    # TODO
-    return json.dumps({}), 200
 
 
 def liveness():
@@ -41,6 +36,26 @@ def readiness():
         logger.critical(e)
         return NoContent, 500
     return NoContent, 200
+
+
+# Create a global recommender instance- this has to be global or else we would overload S3
+recommender = ScoringEngine()
+
+
+def companion_recommendation():
+    """Endpoint for the  main companion recommendation endpoint that serves incoming requests."""
+    response_json = []
+    for recommendation_request in connexion.request.json:
+        missing, recommendations = recommender.predict(
+            recommendation_request['package_list'],
+            companion_threshold=recommendation_request['comp_package_count_threshold'])
+        response_json.append({
+            "missing_packages": missing,
+            "companion_packages": recommendations,
+            "ecosystem": "golang",  # Hardcoding because I don't think this is reqd. elsewhere
+            "package_to_topic_dict": {}  # We don't have any topics here, use Kronos if you do.
+        })
+    return json.dumps(response_json), 200
 
 
 app = connexion.App(__name__, specification_dir='swagger/')

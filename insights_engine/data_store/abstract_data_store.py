@@ -30,11 +30,11 @@ class AbstractDataStore(metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def read_json_file(self, filename):
+    def read_json_file(self):
         """Read JSON file from the data source."""
         raise NotImplementedError()
 
     @abc.abstractmethod
-    def read_into_file(self, filename):
+    def read_into_file(self):
         """Read from data store and return stream as a file object."""
         raise NotImplementedError()
