@@ -6,7 +6,7 @@ COPY ./insights_engine /insights_engine
 COPY ./requirements.txt /requirements.txt
 
 RUN yum install -y epel-release &&\
-    yum install -y gcc git python34-pip python34-requests httpd httpd-devel python34-devel &&\
+    yum install -y gcc-c++ git python34-pip python34-requests httpd httpd-devel python34-devel &&\
     yum clean all
 
 RUN chmod 0777 /insights_engine/scripts/entrypoint.sh
