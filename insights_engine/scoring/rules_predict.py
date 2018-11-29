@@ -1,10 +1,11 @@
 """Contains the ScoringEngine used for predictions."""
 import os
 
-import insights_engine.config as config
-from insights_engine.data_store.s3_data_store import S3DataStore
-
 import pandas as pd
+
+import insights_engine.config as config
+from insights_engine.data_store.local_filesystem import LocalFileSystem
+from insights_engine.data_store.s3_data_store import S3DataStore
 
 
 class ScoringEngine:
@@ -12,8 +13,12 @@ class ScoringEngine:
 
     def __init__(self):
         """Construct a new scoring object."""
-        self.s3_bucket = S3DataStore(config.S3_BUCKET_NAME, config.AWS_S3_ACCESS_KEY_ID,
-                                     config.AWS_S3_SECRET_ACCESS_KEY)
+        if config.USE_AWS == "True":
+            self.s3_bucket = S3DataStore(config.S3_BUCKET_NAME, config.AWS_S3_ACCESS_KEY_ID,
+                                         config.AWS_S3_SECRET_ACCESS_KEY)
+        else:
+            # not really S3
+            self.s3_bucket = LocalFileSystem(config.S3_BUCKET_NAME)
         self.ruleset_json = self.s3_bucket.read_json_file(
             os.path.join(config._TRAINED_OBJECT_PREFIX, config.ASSOCIATION_RULE_JSON))
         self.s3_bucket.download_file(
