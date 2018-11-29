@@ -1,6 +1,6 @@
 #!/bin/bash
 
-directories="insights_engine/"
+directories="insights_engine/ test/"
 pass=0
 fail=0
 
