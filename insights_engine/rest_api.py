@@ -1,6 +1,5 @@
 """Implementation of the REST API for the PyPi insights service."""
 
-import json
 import logging
 
 import connexion
