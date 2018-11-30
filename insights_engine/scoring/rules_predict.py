@@ -51,15 +51,22 @@ class ScoringEngine:
         candidate_rules = candidate_rules[
             candidate_rules['confidence'] > config.MIN_CONFIDENCE_SCORING]
         candidate_rules = candidate_rules[candidate_rules['lift'] >= 0]
-        companion = candidate_rules[["consequent", "confidence"]][:companion_threshold]
+        companion = candidate_rules[["consequent", "confidence"]]
         recommendations = []
+        recommendation_set = set()  # For avoiding duplicates, lookup set
         for index, rule in companion.iterrows():
             for conseq in rule['consequent']:
+                if conseq in recommendation_set:
+                    continue
+                recommendation_set.add(conseq)
                 recommendations.append({
                     "package_name": self.index_to_package_map[str(conseq)],
                     "cooccurrence_probability": round(rule['confidence'], 4) * 100,
                     "topic_list": []
                 })
+            if len(recommendations) > companion_threshold:
+                # We already have enough companions
+                break
         return recommendations
 
     def predict(self, input_stack, companion_threshold):
