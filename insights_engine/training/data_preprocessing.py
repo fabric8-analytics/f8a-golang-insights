@@ -106,68 +106,8 @@ def parse_godeps(mercator_op):  # pragma: no cover
     return list(packages_set)
 
 
-def main():  # pragma: no cover
-    """Pre-processing logic."""
-    manifests_glide = []
-    with open(
-            '~/f8a/mercator-go/manifests_kube/schemakube_ecosystem_glide_yaml.json') \
-            as f:
-        content = f.read()
-    json_content = json.loads(content)
-    if not os.path.exists('/tmp/current_workdir'):
-        os.makedirs('/tmp/current_workdir')
-    for record in json_content:
-        with open('/tmp/current_workdir/glide.yaml', 'w') as temp_manifest:
-            temp_manifest.write(record['content'])
-        manifests_glide.append(parse_glide_yaml(run_mercator('/tmp/current_workdir/glide.yaml')))
-
-    print(len(manifests_glide))
-
-    with open('manifests_glide.json', 'w') as f:
-        f.write(json.dumps(manifests_glide))
-
-    manifests_dep = []
-    with open(
-            '~/f8a/mercator-go/manifests_kube/schemakube_ecosystem_gopkg_toml.json') \
-            as f:
-        content = f.read()
-    json_content = json.loads(content)
-    if not os.path.exists('/tmp/current_workdir'):
-        os.makedirs('/tmp/current_workdir')
-    for record in json_content:
-        with open('/tmp/current_workdir/Gopkg.toml', 'w') as temp_manifest:
-            temp_manifest.write(record['content'])
-        manifests_dep.append(parse_gopkg_toml(run_mercator('/tmp/current_workdir/Gopkg.toml')))
-
-    print(len(manifests_dep))
-
-    manifests_godeps = []
-    with open(
-            '~/f8a/mercator-go/manifests_kube/schemakube_ecosystem_godeps.json') \
-            as f:
-        content = f.read()
-    json_content = json.loads(content)
-    if not os.path.exists('/tmp/current_workdir'):
-        os.makedirs('/tmp/current_workdir')
-    for record in json_content:
-        man_norm = parse_godeps(record['content'])
-        if man_norm:
-            manifests_godeps.append(man_norm)
-
-    print(len(manifests_godeps))
-
-    manifests_all = manifests_dep + manifests_godeps + manifests_glide
-
-    with open('golang_manifests.json', 'w') as f:
-        f.write(json.dumps(manifests_all))
-
-    for idx, manifest in enumerate(manifests_all):
-        manifest_new = []
-        for package in manifest:
-            if not package.startswith('./'):
-                manifest_new.append(package)
-        manifests_all[idx] = manifest_new
-
+def eliminate_duplicates(manifests_all):
+    """Eliminate duplicates in list of all manifests."""
     # Elimiate duplicates
     manifest_list_new = []
 
@@ -183,8 +123,80 @@ def main():  # pragma: no cover
     print(len(manifest_list_new))
 
     manifest_list_new = [list(manifest) for manifest in manifest_list_new]
-    with open('golang_manifests_unique.json', 'w') as f:
-        f.write(json.dumps(manifest_list_new))
+    return manifest_list_new
+
+
+def import_json(filename):
+    """Export and parse given JSON file."""
+    # TODO: move into fabric8-utils?
+    with open(filename) as f:
+        content = f.read()
+    return json.loads(content)
+
+
+def export_json(filename, content):
+    """Export given content to JSON file."""
+    # TODO: move into fabric8-utils?
+    with open(filename, 'w') as f:
+        f.write(json.dumps(content))
+
+
+def main():  # pragma: no cover
+    """Pre-processing logic."""
+    json_content = import_json(
+        '~/f8a/mercator-go/manifests_kube/schemakube_ecosystem_glide_yaml.json')
+
+    manifests_glide = []
+    if not os.path.exists('/tmp/current_workdir'):
+        os.makedirs('/tmp/current_workdir')
+    for record in json_content:
+        with open('/tmp/current_workdir/glide.yaml', 'w') as temp_manifest:
+            temp_manifest.write(record['content'])
+        manifests_glide.append(parse_glide_yaml(run_mercator('/tmp/current_workdir/glide.yaml')))
+
+    print(len(manifests_glide))
+
+    export_json('manifests_glide.json', manifests_glide)
+
+    manifests_dep = []
+    json_content = import_json(
+        '~/f8a/mercator-go/manifests_kube/schemakube_ecosystem_gopkg_toml.json')
+
+    if not os.path.exists('/tmp/current_workdir'):
+        os.makedirs('/tmp/current_workdir')
+    for record in json_content:
+        with open('/tmp/current_workdir/Gopkg.toml', 'w') as temp_manifest:
+            temp_manifest.write(record['content'])
+        manifests_dep.append(parse_gopkg_toml(run_mercator('/tmp/current_workdir/Gopkg.toml')))
+
+    print(len(manifests_dep))
+
+    manifests_godeps = []
+    json_content = import_json('~/f8a/mercator-go/manifests_kube/schemakube_ecosystem_godeps.json')
+
+    if not os.path.exists('/tmp/current_workdir'):
+        os.makedirs('/tmp/current_workdir')
+    for record in json_content:
+        man_norm = parse_godeps(record['content'])
+        if man_norm:
+            manifests_godeps.append(man_norm)
+
+    print(len(manifests_godeps))
+
+    manifests_all = manifests_dep + manifests_godeps + manifests_glide
+
+    export_json('golang_manifests.json', manifests_all)
+
+    for idx, manifest in enumerate(manifests_all):
+        manifest_new = []
+        for package in manifest:
+            if not package.startswith('./'):
+                manifest_new.append(package)
+        manifests_all[idx] = manifest_new
+
+    manifest_list_new = eliminate_duplicates(manifests_all)
+
+    export_json('golang_manifests_unique.json', manifest_list_new)
 
     package_set = set()
 
