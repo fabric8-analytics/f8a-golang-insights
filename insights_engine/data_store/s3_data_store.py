@@ -33,7 +33,7 @@ daiquiri.setup(level=logging.WARNING)
 _logger = daiquiri.getLogger(__name__)
 
 
-class S3DataStore():
+class S3DataStore():  # pragma: no cover
     """S3 wrapper object."""
 
     def __init__(self, src_bucket_name, access_key, secret_key):

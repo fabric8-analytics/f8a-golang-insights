@@ -18,13 +18,13 @@ class ScoringEngine:
                                          config.AWS_S3_SECRET_ACCESS_KEY)
         else:
             # not really S3
-            self.s3_bucket = LocalFileSystem(config.S3_BUCKET_NAME)
+            self.s3_bucket = LocalFileSystem('tests/test_data/' + config.S3_BUCKET_NAME)
         self.ruleset_json = self.s3_bucket.read_json_file(
             os.path.join(config._TRAINED_OBJECT_PREFIX, config.ASSOCIATION_RULE_JSON))
         self.s3_bucket.download_file(
             os.path.join(config._TRAINED_OBJECT_PREFIX, config.ASSOCIATION_RULES_DF),
-            config.ASSOCIATION_RULES_DF)
-        self.rules_df = pd.read_pickle(config.ASSOCIATION_RULES_DF)
+            os.path.join("/tmp/", config.ASSOCIATION_RULES_DF))
+        self.rules_df = pd.read_pickle(os.path.join("/tmp/", config.ASSOCIATION_RULES_DF))
         # Load the package to index and index to package mapping required for scoring.
         package_idx = self.s3_bucket.read_json_file(
             os.path.join(config._TRAINED_OBJECT_PREFIX, config.PACKAGE_IDX_MAPS))

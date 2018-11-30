@@ -30,7 +30,7 @@ daiquiri.setup(level=logging.WARNING)
 _logger = daiquiri.getLogger(__name__)
 
 
-class LocalFileSystem(AbstractDataStore):
+class LocalFileSystem(AbstractDataStore):  # pragma: no cover
     """Wrapper on local filesystem, API similar to s3DataStore."""
 
     def __init__(self, src_dir):
@@ -60,7 +60,7 @@ class LocalFileSystem(AbstractDataStore):
 
     def download_file(self, src, target):
         """Download a file from data_store."""
-        with open(src, 'rb') as inf, open(target, 'wb') as out:
+        with open(os.path.join(self.src_dir, src), 'rb') as inf, open(target, 'wb') as out:
             out.write(inf.read())
 
     def read_into_file(self, filename):

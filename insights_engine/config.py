@@ -24,8 +24,8 @@ import os
 _TRAINING_OBJECT_PREFIX = "training_data"
 _TRAINED_OBJECT_PREFIX = "model"
 
-AWS_S3_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "")
-AWS_S3_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
+AWS_S3_ACCESS_KEY_ID = os.environ.get("AWS_S3_ACCESS_KEY_ID", "")
+AWS_S3_SECRET_ACCESS_KEY = os.environ.get("AWS_S3_SECRET_ACCESS_KEY", "")
 S3_BUCKET_NAME = os.environ.get("S3_BUCKET_NAME", "golang-insights")
 AWS_S3_ENDPOINT_URL = os.environ.get("AWS_S3_ENDPOINT_URL", "")
 NORMALIZED_MANIFEST_PATH = os.path.join(_TRAINING_OBJECT_PREFIX,

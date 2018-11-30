@@ -27,11 +27,11 @@ def readiness():
     try:
         if config.USE_AWS == "True":
             S3DataStore(config.S3_BUCKET_NAME, config.AWS_S3_ACCESS_KEY_ID,
-                        config.AWS_S3_SECRET_ACCESS_KEY)
+                        config.AWS_S3_SECRET_ACCESS_KEY)  # pragma: no cover
         else:
             LocalFileSystem(config.S3_BUCKET_NAME)
         logger.info("Service up and ready to serve requests.")
-    except Exception as e:
+    except Exception as e:  # pragma: no cover
         logger.critical("Could not bring up service.")
         logger.critical(e)
         return NoContent, 500
@@ -62,6 +62,6 @@ app = connexion.App(__name__, specification_dir='swagger/')
 app.add_api('swagger.yaml')
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     # running in development mode
     app.run(port=6006, debug=True)
