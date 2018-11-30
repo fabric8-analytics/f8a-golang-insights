@@ -55,7 +55,7 @@ def companion_recommendation():
             "ecosystem": "golang",  # Hardcoding because I don't think this is reqd. elsewhere
             "package_to_topic_dict": {}  # We don't have any topics here, use Kronos if you do.
         })
-    return json.dumps(response_json), 200
+    return response_json, 200
 
 
 app = connexion.App(__name__, specification_dir='swagger/')
