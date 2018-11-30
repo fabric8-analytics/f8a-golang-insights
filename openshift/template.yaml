@@ -22,6 +22,7 @@ objects:
         labels:
           service: f8a-golang-insights
       spec:
+        restartPolicy: ${RESTART_POLICY}
         containers:
         - command:
           - /insights_engine/scripts/entrypoint.sh
@@ -143,6 +144,12 @@ parameters:
   required: false
   name: FLASK_LOGGING_LEVEL
   value: "WARNING"
+
+- description: Restart policy
+  displayName: Restart policy
+  required: true
+  name: RESTART_POLICY
+  value: "Always"
 
 - description: "Name of the S3 bucket to use for scoring/training"
   displayName: S3 bucket name
