@@ -17,20 +17,8 @@ def run_mercator(man_file_name):  # pragma: no cover
     return json.loads(mercator_output)
 
 
-# Parser for Glide manifests
-def parse_glide_yaml(mercator_op):  # pragma: no cover
-    """Parse glide.yaml files and get the manifests as a JSON."""
-    cur_manifest_lock = mercator_op['items'][0]['result'].get('_dependency_tree_lock_file', {}).get(
-            'import', [])
-    cur_manifest = mercator_op['items'][0]['result'].get('import', [])
-
-    cur_manifest_list = []
-    if not cur_manifest:
-        cur_manifest_list = [mercator_op['items'][0]['result']['package']]
-
-    if cur_manifest_lock:
-        cur_manifest = cur_manifest_lock
-
+def add_packages_to_manifest_list(cur_manifest, cur_manifest_list):
+    """Add packages from the input manifests into the manifest list."""
     for package in cur_manifest:
         if 'subpackages' not in package:
             try:
@@ -51,6 +39,24 @@ def parse_glide_yaml(mercator_op):  # pragma: no cover
                         cur_manifest_list.append(os.path.join(package['package'], sub_pkg_name))
             except Exception:
                 print(package)
+
+
+# Parser for Glide manifests
+def parse_glide_yaml(mercator_op):  # pragma: no cover
+    """Parse glide.yaml files and get the manifests as a JSON."""
+    cur_manifest_lock = mercator_op['items'][0]['result'].get('_dependency_tree_lock_file', {}).get(
+            'import', [])
+    cur_manifest = mercator_op['items'][0]['result'].get('import', [])
+
+    cur_manifest_list = []
+    if not cur_manifest:
+        cur_manifest_list = [mercator_op['items'][0]['result']['package']]
+
+    if cur_manifest_lock:
+        cur_manifest = cur_manifest_lock
+
+    add_packages_to_manifest_list(cur_manifest, cur_manifest_list)
+
     return cur_manifest_list
 
 
