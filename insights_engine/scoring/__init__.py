@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Abstract class for data store interactions.
+
 
 Copyright © 2018 Red Hat Inc.
 
@@ -18,23 +18,3 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-import abc
-
-
-class AbstractDataStore(metaclass=abc.ABCMeta):  # pragma: no cover
-    """Abstract class to dictate the behaviour of a data store."""
-
-    @abc.abstractmethod
-    def get_name(self):
-        """Get name of bucket or root fs directory."""
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def read_json_file(self):
-        """Read JSON file from the data source."""
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def read_into_file(self):
-        """Read from data store and return stream as a file object."""
-        raise NotImplementedError()
