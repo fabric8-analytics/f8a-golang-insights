@@ -44,7 +44,7 @@ class ScoringEngine:
         candidate_rules = candidate_rules[candidate_rules['lift'] > 0]
         return candidate_rules
 
-    def _create_companion_set(self, candidate_rules, companion_threshold):
+    def _create_companion_set(self, candidate_rules, companion_threshold, inp_st):
         """Select rules based on criteria and recommend companions."""
         # First sort by length of antecedent
         candidate_rules = candidate_rules.sort_values(by='antecedent')
@@ -56,12 +56,12 @@ class ScoringEngine:
         recommendation_set = set()  # For avoiding duplicates, lookup set
         for index, rule in companion.iterrows():
             for conseq in rule['consequent']:
-                if conseq in recommendation_set:
+                if conseq in recommendation_set or conseq in inp_st:
                     continue
                 recommendation_set.add(conseq)
                 recommendations.append({
                     "package_name": self.index_to_package_map[str(conseq)],
-                    "cooccurrence_probability": round(rule['confidence'], 4) * 100,
+                    "cooccurrence_probability": round(rule['confidence'] * 100, 2),
                     "topic_list": []
                 })
             if len(recommendations) > companion_threshold:
@@ -80,7 +80,8 @@ class ScoringEngine:
                 encoded_stack.append(p_id)
         if encoded_stack:
             candidate_rules = self._get_candidate_rules(input_stack=encoded_stack)
-            recommendations = self._create_companion_set(candidate_rules, companion_threshold)
+            recommendations = self._create_companion_set(candidate_rules, companion_threshold,
+                                                         set(encoded_stack))
         else:
             recommendations = []
         return missing, recommendations
