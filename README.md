@@ -1,5 +1,14 @@
 # Golang companion recommendation insights
 
+This repository contains the code powering the Golang(OpenShift/Kubernetes) insights engine of developer AI platform. WIP.
+
+## Unit Tests
+There's a script named `runtests.sh` that can be used to run all unit tests. The unit test coverage is reported as well by this script.
+
+Usage:
+```
+./runtests.sh
+```
 
 ## Footnotes:
 
@@ -13,7 +22,7 @@
 ```
 
 The first script checks the indentation, line lengths, variable names, whitespace around operators etc. The second
-script checks all documentation strings - its presense and format. Please fix any warnings and errors reported by these
+script checks all documentation strings - its presence and format. Please fix any warnings and errors reported by these
 scripts.
 
 #### Code complexity measurement:
@@ -55,7 +64,7 @@ Please note that only semantical problems are reported.
 
 #### Check for scripts written in BASH
 
-The script named `check-bashscripts.sh` can be used to check all BASH scripts (in fact: all files with the `.sh` extension) for various possible issues, incompatibilies, and caveats. This script can be run w/o any arguments:
+The script named `check-bashscripts.sh` can be used to check all BASH scripts (in fact: all files with the `.sh` extension) for various possible issues, incompatibilities, and caveats. This script can be run w/o any arguments:
 
 ```
 ./check-bashscripts.sh
@@ -63,4 +72,3 @@ The script named `check-bashscripts.sh` can be used to check all BASH scripts (i
 
 Please see [the following link](https://github.com/koalaman/shellcheck) for further explanation, how the ShellCheck works and which issues can be detected.
 
-This repository contains the code powering the Golang(Openshift/Kubernetes) insights engine of developer AI platform. WIP.
