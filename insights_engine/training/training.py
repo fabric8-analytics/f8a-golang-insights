@@ -22,6 +22,7 @@ import json
 import logging
 import os
 import time
+import datetime
 
 import daiquiri
 from pyspark.ml.fpm import FPGrowth
@@ -93,9 +94,11 @@ with open(config.PACKAGE_IDX_MAPS, 'w') as f:
 rules_df.to_pickle(config.ASSOCIATION_RULES_DF)
 
 # Upload files to S3
+
+trained_date = datetime.datetime.now().strftime('%Y-%m-%d')
 s3_bucket.upload_file(config.ASSOCIATION_RULE_JSON,
-                      os.path.join(config._TRAINED_OBJECT_PREFIX, config.ASSOCIATION_RULE_JSON))
+                      os.path.join(trained_date, config.ASSOCIATION_RULE_JSON))
 s3_bucket.upload_file(config.ASSOCIATION_RULES_DF,
-                      os.path.join(config._TRAINED_OBJECT_PREFIX, config.ASSOCIATION_RULES_DF))
+                      os.path.join(trained_date, config.ASSOCIATION_RULES_DF))
 s3_bucket.upload_file(config.PACKAGE_IDX_MAPS,
-                      os.path.join(config._TRAINED_OBJECT_PREFIX, config.PACKAGE_IDX_MAPS))
+                      os.path.join(trained_date, config.PACKAGE_IDX_MAPS))
