@@ -20,9 +20,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 import os
 
-
-_TRAINING_OBJECT_PREFIX = "training_data"
-_TRAINED_OBJECT_PREFIX = "model"
+MODEL_VERSION = os.environ.get('MODEL_VERSION', '2019-01-03')
+_TRAINING_OBJECT_PREFIX = os.path.join(MODEL_VERSION, "training_data")
+_TRAINED_OBJECT_PREFIX = os.path.join(MODEL_VERSION, "model")
 
 AWS_S3_ACCESS_KEY_ID = os.environ.get("AWS_S3_ACCESS_KEY_ID", "")
 AWS_S3_SECRET_ACCESS_KEY = os.environ.get("AWS_S3_SECRET_ACCESS_KEY", "")
