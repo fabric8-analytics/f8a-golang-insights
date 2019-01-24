@@ -24,16 +24,36 @@ def test_readiness_endpoint(client):
     """Test the liveness probe."""
     response = client.get('/api/v1/readiness')
     assert response.status_code == 200
-    json_data = get_json_from_response(response)
-    assert json_data == {}, "Empty JSON response expected"
+
+
+def test_readiness_endpoint_wrong_http_method(client):
+    """Test the /api/v1/readiness endpoint by calling it with wrong HTTP method."""
+    response = client.post('/api/v1/readiness')
+    assert response.status_code == 405
+    response = client.put('/api/v1/readiness')
+    assert response.status_code == 405
+    response = client.patch('/api/v1/readiness')
+    assert response.status_code == 405
+    response = client.delete('/api/v1/readiness')
+    assert response.status_code == 405
 
 
 def test_liveness_endpoint(client):
     """Test the liveness probe."""
     response = client.get('/api/v1/liveness')
     assert response.status_code == 200
-    json_data = get_json_from_response(response)
-    assert json_data == {}, "Empty JSON response expected"
+
+
+def test_liveness_endpoint_wrong_http_method(client):
+    """Test the /api/v1/liveness endpoint by calling it with wrong HTTP method."""
+    response = client.post('/api/v1/liveness')
+    assert response.status_code == 405
+    response = client.put('/api/v1/liveness')
+    assert response.status_code == 405
+    response = client.patch('/api/v1/liveness')
+    assert response.status_code == 405
+    response = client.delete('/api/v1/liveness')
+    assert response.status_code == 405
 
 
 def test_companion(client):
