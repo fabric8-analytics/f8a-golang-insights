@@ -15,16 +15,45 @@ def client():
         yield c
 
 
-def test_liveness(client):
+def get_json_from_response(response):
+    """Decode JSON from response."""
+    return json.loads(response.data.decode('utf8'))
+
+
+def test_readiness_endpoint(client):
+    """Test the liveness probe."""
+    response = client.get('/api/v1/readiness')
+    assert response.status_code == 200
+
+
+def test_readiness_endpoint_wrong_http_method(client):
+    """Test the /api/v1/readiness endpoint by calling it with wrong HTTP method."""
+    response = client.post('/api/v1/readiness')
+    assert response.status_code == 405
+    response = client.put('/api/v1/readiness')
+    assert response.status_code == 405
+    response = client.patch('/api/v1/readiness')
+    assert response.status_code == 405
+    response = client.delete('/api/v1/readiness')
+    assert response.status_code == 405
+
+
+def test_liveness_endpoint(client):
     """Test the liveness probe."""
     response = client.get('/api/v1/liveness')
     assert response.status_code == 200
 
 
-def test_readiness(client):
-    """Test the liveness probe."""
-    response = client.get('/api/v1/readiness')
-    assert response.status_code == 200
+def test_liveness_endpoint_wrong_http_method(client):
+    """Test the /api/v1/liveness endpoint by calling it with wrong HTTP method."""
+    response = client.post('/api/v1/liveness')
+    assert response.status_code == 405
+    response = client.put('/api/v1/liveness')
+    assert response.status_code == 405
+    response = client.patch('/api/v1/liveness')
+    assert response.status_code == 405
+    response = client.delete('/api/v1/liveness')
+    assert response.status_code == 405
 
 
 def test_companion(client):
