@@ -15,16 +15,20 @@ def client():
         yield c
 
 
-def test_liveness(client):
-    """Test the liveness probe."""
-    response = client.get('/api/v1/liveness')
-    assert response.status_code == 200
-
-
-def test_readiness(client):
+def test_readiness_endpoint(client):
     """Test the liveness probe."""
     response = client.get('/api/v1/readiness')
     assert response.status_code == 200
+    json_data = get_json_from_response(response)
+    assert json_data == {}, "Empty JSON response expected"
+
+
+def test_liveness_endpoint(client):
+    """Test the liveness probe."""
+    response = client.get('/api/v1/liveness')
+    assert response.status_code == 200
+    json_data = get_json_from_response(response)
+    assert json_data == {}, "Empty JSON response expected"
 
 
 def test_companion(client):
