@@ -15,6 +15,11 @@ def client():
         yield c
 
 
+def get_json_from_response(response):
+    """Decode JSON from response."""
+    return json.loads(response.data.decode('utf8'))
+
+
 def test_readiness_endpoint(client):
     """Test the liveness probe."""
     response = client.get('/api/v1/readiness')
