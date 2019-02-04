@@ -1,7 +1,5 @@
 #!/bin/bash
 
-cat env-toolkit
-
 function prepare_venv() {
     VIRTUALENV=$(which virtualenv) || :
     if [ -z "$VIRTUALENV" ]; then
