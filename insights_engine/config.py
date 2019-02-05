@@ -20,9 +20,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 import os
 
+ECOSYSTEM = os.environ.get('ARM_SCORING_REGION', 'golang')
+DEPLOYMENT_PREFIX = os.environ.get('DEPLOYMENT_PREFIX', 'dev')
 MODEL_VERSION = os.environ.get('MODEL_VERSION', '2019-01-03')
-_TRAINING_OBJECT_PREFIX = os.path.join(MODEL_VERSION, "training_data")
-_TRAINED_OBJECT_PREFIX = os.path.join(MODEL_VERSION, "model")
+_TRAINING_OBJECT_PREFIX = os.path.join(ECOSYSTEM, DEPLOYMENT_PREFIX, MODEL_VERSION, "data")
+_TRAINED_OBJECT_PREFIX = os.path.join(ECOSYSTEM, DEPLOYMENT_PREFIX, MODEL_VERSION, "trained-model")
 
 AWS_S3_ACCESS_KEY_ID = os.environ.get("AWS_S3_ACCESS_KEY_ID", "")
 AWS_S3_SECRET_ACCESS_KEY = os.environ.get("AWS_S3_SECRET_ACCESS_KEY", "")

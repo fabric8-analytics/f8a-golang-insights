@@ -97,8 +97,11 @@ rules_df.to_pickle(config.ASSOCIATION_RULES_DF)
 
 trained_date = datetime.datetime.now().strftime('%Y-%m-%d')
 s3_bucket.upload_file(config.ASSOCIATION_RULE_JSON,
-                      os.path.join(trained_date, config.ASSOCIATION_RULE_JSON))
+                      os.path.join(config.ECOSYSTEM, config.DEPLOYMENT_PREFIX, trained_date,
+                                   config.ASSOCIATION_RULE_JSON))
 s3_bucket.upload_file(config.ASSOCIATION_RULES_DF,
-                      os.path.join(trained_date, config.ASSOCIATION_RULES_DF))
+                      os.path.join(config.ECOSYSTEM, config.DEPLOYMENT_PREFIX, trained_date,
+                                   config.ASSOCIATION_RULES_DF))
 s3_bucket.upload_file(config.PACKAGE_IDX_MAPS,
-                      os.path.join(trained_date, config.PACKAGE_IDX_MAPS))
+                      os.path.join(config.ECOSYSTEM, config.DEPLOYMENT_PREFIX, trained_date,
+                                   config.PACKAGE_IDX_MAPS))
