@@ -54,6 +54,8 @@ objects:
             value: ${MODEL_VERSION}
           - name: MIN_CONFIDENCE_SCORING
             value: ${MIN_CONFIDENCE_SCORING}
+          - name: ARM_SCORING_REGION
+            value: "${ARM_SCORING_REGION}"
           name: f8a-golang-insights
           image: "${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${IMAGE_TAG}"
           ports:
@@ -170,3 +172,9 @@ parameters:
   required: true
   name: MODEL_VERSION
   value: "2019-01-03"
+
+- description: "Association Rule Mining Scoring Region - golang"
+  displayName: Association Rule Mining Scoring Region
+  required: true
+  name: ARM_SCORING_REGION
+  value: "golang"
