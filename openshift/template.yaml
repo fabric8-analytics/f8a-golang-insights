@@ -49,7 +49,10 @@ objects:
           - name: FLASK_LOGGING_LEVEL
             value: ${FLASK_LOGGING_LEVEL}
           - name: S3_BUCKET_NAME
-            value: ${S3_BUCKET_NAME}
+            valueFrom:
+              secretKeyRef:
+                key: golang-insights-s3
+                name: bucket
           - name: MODEL_VERSION
             value: ${MODEL_VERSION}
           - name: MIN_CONFIDENCE_SCORING
@@ -154,12 +157,6 @@ parameters:
   required: true
   name: RESTART_POLICY
   value: "Always"
-
-- description: "Name of the S3 bucket to use for scoring/training"
-  displayName: S3 bucket name
-  required: true
-  name: S3_BUCKET_NAME
-  value: "golang-insights"
 
 - description: "Minimum recommendation confidence probability"
   displayName: Minimum recommendation confidence
