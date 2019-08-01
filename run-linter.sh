@@ -1,6 +1,10 @@
 #!/bin/bash
 
-directories="insights_engine/ tests/ tools"
+IFS=$'\n'
+
+# list of directories with sources to check
+directories=$(cat directories.txt)
+
 pass=0
 fail=0
 
