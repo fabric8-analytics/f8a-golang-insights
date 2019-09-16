@@ -28,3 +28,5 @@ echo "*** Unit tests ***"
 echo "*****************************************"
 
 pytest --cov=/insights_engine/ --cov-report term-missing --cov-fail-under=$COVERAGE_THRESHOLD -vv /tests/unit_tests/
+
+codecov --token=f8afa57f-ea66-4ec1-9d2a-a2983155bc54
