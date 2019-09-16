@@ -34,3 +34,4 @@ six==1.11.0               # via connexion, openapi-spec-validator, python-dateut
 swagger-ui-bundle==0.0.2  # via connexion
 urllib3==1.24.2           # via botocore, requests
 werkzeug==0.14.1          # via flask
+codecov
